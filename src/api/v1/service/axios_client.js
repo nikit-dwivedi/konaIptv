@@ -14,6 +14,7 @@ let authorizationHeaderString = "Basic " + encodedData;
   "code", "status", "message", "data";
 }
 async function axiosResponse(response) {
+console.log(response)
   if (response.status == 200) {
     return response.data;
   } else {
