@@ -47,9 +47,6 @@ module.exports = {
       url: endpoint,
       headers: {
         "Content-Type": "application/json",
-        "x-api-version": "1.0",
-        "x-api-key": apiKey,
-        Authorization: authorization,
       },
     };
     return axios(config)
