@@ -4,7 +4,7 @@ const { success, badRequest, unknownError } = require("../helpers/response_helpe
 exports.getCategory = async (req, res) => {
     try {
         const data = await categoryList();
-        return data ? success(res, "category list", data) : badRequest(res, "no category found", [])
+return data ? success(res, "category list", data) : badRequest(res, "no category found", [])
     } catch (error) {
         return unknownError(res, "unknown error")
     }
