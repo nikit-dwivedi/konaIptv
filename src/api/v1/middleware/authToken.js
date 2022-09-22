@@ -87,7 +87,7 @@ function authenticateUser(req, res, next) {
       unauthorized(res, "invalid token");
     }
   } else {
-    forbidden(res, "token not found");
+    forbidden(res, "Please login");
   }
 }
 
@@ -106,10 +106,10 @@ function authenticateVerifiedyUser(req, res, next) {
         next();
       }
     } catch (error) {
-      unauthorized(res, "invalid token");
+      unauthorized(res, "please renew your subscription");
     }
   } else {
-    forbidden(res, "token not found");;
+    forbidden(res, "Please login");;
   }
 }
 

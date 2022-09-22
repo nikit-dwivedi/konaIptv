@@ -1,4 +1,6 @@
-let baseUrl = "http://line.premium-dino.com/player_api.php?username=ff5d039692&password=1384c85f6b"
+let username = '763cc252d9'
+let password = 'e88519fb56'
+let baseUrl = `http://line.premium-dino.com/player_api.php?username=${username}&password=${password}`
 
 module.exports = {
     categoryUrl: () => {
