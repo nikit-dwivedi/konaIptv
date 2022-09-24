@@ -1,10 +1,10 @@
 const { validationResult } = require("express-validator")
 const { unknownError, badRequest, success, created } = require("../helpers/response_helper");
-const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp } = require("../helpers/user.helper");
+const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp, changeSubscribeStatus, allUsers } = require("../helpers/user.helper");
 const { parseJwt } = require("../middleware/authToken");
 
 module.exports = {
-    register: async(req, res) => {
+    register: async (req, res) => {
         try {
             const error = validationResult(req);
             if (!error.isEmpty()) {
@@ -25,7 +25,7 @@ module.exports = {
             return unknownError(res, "unknow error")
         }
     },
-    emailVerification: async(req, res) => {
+    emailVerification: async (req, res) => {
         try {
             const error = validationResult(req);
             if (!error.isEmpty()) {
@@ -38,7 +38,7 @@ module.exports = {
             unknownError(res, "unknown error")
         }
     },
-    login: async(req, res) => {
+    login: async (req, res) => {
         try {
             const error = validationResult(req);
             if (!error.isEmpty()) {
@@ -51,7 +51,7 @@ module.exports = {
             return unknownError(res, "unknown error");
         }
     },
-    sendOtp: async(req, res) => {
+    sendOtp: async (req, res) => {
         try {
             const error = validationResult(req);
             if (!error.isEmpty()) {
@@ -72,7 +72,7 @@ module.exports = {
             return unknownError(res, "unknow error")
         }
     },
-    otpVerification: async(req, res) => {
+    otpVerification: async (req, res) => {
         try {
             const error = validationResult(req);
             if (!error.isEmpty()) {
@@ -80,13 +80,13 @@ module.exports = {
             }
             const { reqId, otp } = req.body
             const verification = await verifyOtp(reqId, otp)
-                // const token
+            // const token
             return verification ? success(res, "otp verified", verification) : badRequest(res, "invalid otp")
         } catch (error) {
             unknownError(res, "unknown error")
         }
     },
-    changeCurrentPassword: async(req, res) => {
+    changeCurrentPassword: async (req, res) => {
         try {
             const error = validationResult(req);
             if (!error.isEmpty()) {
@@ -104,7 +104,7 @@ module.exports = {
             return unknownError(res, "unknown error")
         }
     },
-    userById: async(req, res) => {
+    userById: async (req, res) => {
         try {
             const error = validationResult(req);
             if (!error.isEmpty()) {
@@ -112,6 +112,33 @@ module.exports = {
             }
             const token = parseJwt(req)
             const userData = await checkByUsername(token.username)
+            return userData ? success(res, "success", userData) : badRequest(res, "no user found")
+        } catch (error) {
+            console.log(error);
+            return unknownError(res, "unknown error")
+        }
+    },
+    markUserSubscribed: async (req, res) => {
+        try {
+            const error = validationResult(req);
+            if (!error.isEmpty()) {
+                return badRequest(res, "please provide proper fields")
+            }
+            const { userId, status } = req.body
+            const userData = await changeSubscribeStatus(userId, status)
+            return userData ? success(res, "success") : badRequest(res, "no user found")
+        } catch (error) {
+            console.log(error);
+            return unknownError(res, "unknown error")
+        }
+    },
+    getAllUsers: async (req, res) => {
+        try {
+            const error = validationResult(req);
+            if (!error.isEmpty()) {
+                return badRequest(res, "please provide proper fields")
+            }
+            const userData = await allUsers()
             return userData ? success(res, "success", userData) : badRequest(res, "no user found")
         } catch (error) {
             console.log(error);

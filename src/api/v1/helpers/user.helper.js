@@ -67,7 +67,6 @@ module.exports = {
   checkLogin: async (username, password) => {
     try {
       const userData = await userModel.findOne({ username });
-      console.log(userData);
       if (!userData) {
         return false;
       }
@@ -88,6 +87,23 @@ module.exports = {
       return { token: token, isSub: userData.isSub };
     } catch (error) {
       console.log(error);
+      return false
+    }
+  },
+  changeSubscribeStatus: async (userId, status) => {
+    try {
+      const userData = await userModel.findOneAndUpdate({ userId }, { isSub: status })
+      return userData ? true : false;
+    } catch (error) {
+      return false
+    }
+  },
+  allUsers: async () => {
+    try {
+      const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true }).select('userId username email')
+      const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false }).select('userId username email')
+      return subscribedUserList[0] || unSubscribedUserList[0] ? { subscribedUserList, unSubscribedUserList } : false;
+    } catch (error) {
       return false
     }
   },
