@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator")
 const { unknownError, badRequest, success, created } = require("../helpers/response_helper");
-const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp, changeSubscribeStatus, allUsers } = require("../helpers/user.helper");
+const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp, changeSubscribeStatus, allUsers, blockUser, blockUserList } = require("../helpers/user.helper");
 const { parseJwt } = require("../middleware/authToken");
 
 module.exports = {
@@ -140,6 +140,24 @@ module.exports = {
             }
             const userData = await allUsers()
             return userData ? success(res, "success", userData) : badRequest(res, "no user found")
+        } catch (error) {
+            console.log(error);
+            return unknownError(res, "unknown error")
+        }
+    },
+    changeBlockStatus: async (req, res) => {
+        try {
+            const { userId } = req.params
+            const changeStatus = await blockUser(userId)
+            return changeStatus ? success(res, "status changed") : badRequest(res, "status not changed");
+        } catch (error) {
+            return unknownError(res, "unknown error")
+        }
+    },
+    getBloackedUsers: async (req, res) => {
+        try {
+            const blocklist = await blockUserList()
+            return blocklist ? success(res, "block list", blocklist) : badRequest(res, "bad request");
         } catch (error) {
             console.log(error);
             return unknownError(res, "unknown error")

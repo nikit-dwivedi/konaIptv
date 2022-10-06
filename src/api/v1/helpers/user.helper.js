@@ -98,11 +98,31 @@ module.exports = {
       return false
     }
   },
+  blockUser: async (userId) => {
+    try {
+      const userData = await userModel.findOne({ userId });
+      if (!userData) {
+        return false
+      }
+      userData.isBlocked = !userData.isBlocked
+      return await userData.save() ? true : false;
+    } catch (error) {
+      return false
+    }
+  },
   allUsers: async () => {
     try {
-      const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true }).select('userId username email')
-      const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false }).select('userId username email')
+      const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true, isBlocked: false }).select('userId username email')
+      const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false, isBlocked: false }).select('userId username email')
       return subscribedUserList[0] || unSubscribedUserList[0] ? { subscribedUserList, unSubscribedUserList } : false;
+    } catch (error) {
+      return false
+    }
+  },
+  blockUserList: async () => {
+    try {
+      const blockedUserList = await userModel.find({ isBlocked: true }).select('userId username email')
+      return blockedUserList ? blockedUserList : false;
     } catch (error) {
       return false
     }
