@@ -119,7 +119,7 @@ module.exports = {
   },
   allUsers: async () => {
     try {
-      const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true, isBlocked: false }).select('userId username email')
+      const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true, isBlocked: false }).select('userId username email endDate startDate')
       const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false, isBlocked: false }).select('userId username email')
       return subscribedUserList[0] || unSubscribedUserList[0] ? { subscribedUserList, unSubscribedUserList } : false;
     } catch (error) {
