@@ -119,13 +119,15 @@ module.exports = {
   },
   allUsers: async () => {
     try {
-      const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true, isBlocked: false }).select('userId username email endDate startDate')
-      const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false, isBlocked: false }).select('userId username email')
+      const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true, isBlocked: false }).select('-_id userId username email endDate startDate')
+      const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false, isBlocked: false }).select('-_id userId username email')
       if (subscribedUserList[0]) {
         subscribedUserList.forEach(user => {
           let startDate = new Date(user.startDate)
           let endDate = new Date(user.endDate)
           user._doc.remaingDays = (endDate - startDate) / 86400000
+          delete user.startDate
+          delete user.endDate
         })
       }
       return subscribedUserList[0] || unSubscribedUserList[0] ? { subscribedUserList, unSubscribedUserList } : false;
@@ -135,7 +137,7 @@ module.exports = {
   },
   blockUserList: async () => {
     try {
-      const blockedUserList = await userModel.find({ isBlocked: true }).select('userId username email')
+      const blockedUserList = await userModel.find({ isBlocked: true }).select('-_id userId username email')
       return blockedUserList ? blockedUserList : false;
     } catch (error) {
       return false
