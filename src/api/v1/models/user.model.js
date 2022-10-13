@@ -29,6 +29,12 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
+  startDate:{
+    type:String
+  },
+  endDate:{
+    type:String
+  },
   otp: {
     type: String,
   },

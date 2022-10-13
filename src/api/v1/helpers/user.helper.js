@@ -2,6 +2,7 @@ const userModel = require('../models/user.model');
 const { randomBytes } = require('node:crypto');
 const { encryption, generateUserToken, checkEncryption, generateVerifiedyUserToken } = require('../middleware/authToken');
 const { sendMail } = require('../service/mail.service');
+const { setSchedular } = require('../service/schedule.service');
 
 module.exports = {
   addUser: async (bodyData) => {
@@ -92,9 +93,15 @@ module.exports = {
   },
   changeSubscribeStatus: async (userId, status) => {
     try {
-      const userData = await userModel.findOneAndUpdate({ userId }, { isSub: status })
+      const d = new Date()
+      const newDate = addOneYear();
+      let endDate = newDate.toDateString()
+      let startDate = d.toDateString()
+      const userData = await userModel.findOneAndUpdate({ userId }, { isSub: status, startDate, endDate })
+      await setSchedular(userId, newDate)
       return userData ? true : false;
     } catch (error) {
+      console.log(error);
       return false
     }
   },
@@ -198,4 +205,9 @@ const genrateOtp = async (email) => {
   } catch (error) {
     return false
   }
+}
+function addOneYear() {
+  const d = new Date()
+  d.setFullYear(d.getFullYear() + 1);
+  return d;
 }
