@@ -121,6 +121,13 @@ module.exports = {
     try {
       const subscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: true, isBlocked: false }).select('userId username email endDate startDate')
       const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false, isBlocked: false }).select('userId username email')
+      if (subscribedUserList[0]) {
+        subscribedUserList.forEach(user => {
+          let startDate = new Date(user.startDate)
+          let endDate = new Date(user.endDate)
+          user._doc.remaingDays = (endDate - startDate) / 86400000
+        })
+      }
       return subscribedUserList[0] || unSubscribedUserList[0] ? { subscribedUserList, unSubscribedUserList } : false;
     } catch (error) {
       return false
