@@ -126,8 +126,8 @@ module.exports = {
           let startDate = new Date(user.startDate)
           let endDate = new Date(user.endDate)
           user._doc.remaingDays = (endDate - startDate) / 86400000
-          delete user.startDate
-          delete user.endDate
+          delete user._doc.startDate
+          delete user._doc.endDate
         })
       }
       return subscribedUserList[0] || unSubscribedUserList[0] ? { subscribedUserList, unSubscribedUserList } : false;
