@@ -69,7 +69,7 @@ module.exports = {
             if (reqId === 1) {
                 return badRequest(res, 'otp limit reached');
             }
-            return reqId ? success(res, `otp send successfully ${otp}`, reqId) : badRequest(res, "please provide proper fields")
+            return reqId ? success(res, `otp send successfully `, reqId) : badRequest(res, "please provide proper fields")
         } catch (error) {
             console.log(error);
             return unknownError(res, "unknow error")
