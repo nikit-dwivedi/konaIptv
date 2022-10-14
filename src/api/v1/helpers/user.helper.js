@@ -123,9 +123,10 @@ module.exports = {
       const unSubscribedUserList = await userModel.find({ isVerified: true, isActive: true, isSub: false, isBlocked: false }).select('-_id userId username email')
       if (subscribedUserList[0]) {
         subscribedUserList.forEach(user => {
-          let startDate = new Date(user.startDate)
+
+          let startDate = new Date()
           let endDate = new Date(user.endDate)
-          user._doc.remaingDays = (endDate - startDate) / 86400000
+          user._doc.remaingDays = parseInt((endDate - startDate) / 86400000)
           delete user._doc.startDate
           delete user._doc.endDate
         })
