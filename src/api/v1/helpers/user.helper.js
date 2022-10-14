@@ -45,7 +45,7 @@ module.exports = {
       return false
     }
     await sendMail(email, otp)
-    return reqId
+    return { reqId, otp }
   },
   verifyEmail: async (reqId, otp) => {
     try {
