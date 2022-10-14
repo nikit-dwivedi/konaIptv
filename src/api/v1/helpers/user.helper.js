@@ -72,7 +72,6 @@ module.exports = {
         return false;
       }
       const passwordCheck = await checkEncryption(password, userData.password);
-      console.log(passwordCheck);
       if (!passwordCheck) {
         return false;
       }
@@ -80,12 +79,15 @@ module.exports = {
         userData.isLogin = true
         const token = generateVerifiedyUserToken(userData);
         await userData.save()
-        return { token: token, isSub: userData.isSub }
+        return { token: token, isVerified: userData.isVerified, isSub: userData.isSub }
       }
       const token = generateUserToken(userData);
+      userData.otp = Math.floor(Math.random() * (9999 - 1000) + 1000)
+      userData.reqId = randomBytes(4).toString('hex')
       userData.isLogin = true
       await userData.save()
-      return { token: token, isSub: userData.isSub };
+      await sendMail(userData.email, otp)
+      return { token: token, isVerified: userData.isVerified, isSub: userData.isSub, reqId: userData.reqId };
     } catch (error) {
       console.log(error);
       return false

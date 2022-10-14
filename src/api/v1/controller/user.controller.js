@@ -58,6 +58,9 @@ module.exports = {
                 return badRequest(res, "please provide proper fields")
             }
             const { email } = req.body
+            if (req.headers.authorization) {
+                
+            }
             const userCheck = await checkByEmail(email);
             if (!userCheck) {
                 return badRequest(res, "email doesn't exists")
