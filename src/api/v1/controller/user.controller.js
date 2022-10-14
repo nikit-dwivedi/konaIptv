@@ -65,7 +65,7 @@ module.exports = {
             if (!userCheck) {
                 return badRequest(res, "email doesn't exists")
             }
-            const {reqId,otp} = await genrateOtp(email);
+            const reqId = await genrateOtp(email);
             if (reqId === 1) {
                 return badRequest(res, 'otp limit reached');
             }
