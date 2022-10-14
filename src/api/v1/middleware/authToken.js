@@ -73,10 +73,10 @@ function authenticateUser(req, res, next) {
     try {
       const decode = parseJwt(authHeader);
       const token = authHeader.split(" ")[1];
-      if (decode.userRole == 2) {
+      if (decode.role == 2) {
         jwt.verify(token, adminPublicKEY, verifyOption);
         next();
-      } else if (decode.userRole == 1) {
+      } else if (decode.role == 1) {
         jwt.verify(token, verifiedyUserPublicKEY, verifyOption);
         next();
       } else {
@@ -98,7 +98,7 @@ function authenticateVerifiedyUser(req, res, next) {
       const decode = parseJwt(authHeader)
 
       const token = authHeader.split(" ")[1];
-      if (decode.userRole == 2) {
+      if (decode.role == 2) {
         jwt.verify(token, adminPublicKEY, verifyOption);
         next();
       } else {
