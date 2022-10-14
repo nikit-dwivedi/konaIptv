@@ -86,7 +86,7 @@ module.exports = {
       userData.reqId = randomBytes(4).toString('hex')
       userData.isLogin = true
       await userData.save()
-      await sendMail(userData.email, otp)
+      await sendMail(userData.email, userData.otp)
       return { token: token, isVerified: userData.isVerified, isSub: userData.isSub, reqId: userData.reqId };
     } catch (error) {
       console.log(error);
