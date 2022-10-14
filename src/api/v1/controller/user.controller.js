@@ -59,7 +59,7 @@ module.exports = {
             }
             const { email } = req.body
             if (req.headers.authorization) {
-                
+
             }
             const userCheck = await checkByEmail(email);
             if (!userCheck) {
@@ -95,7 +95,7 @@ module.exports = {
             if (!error.isEmpty()) {
                 return badRequest(res, "please provide proper fields")
             }
-            const token = parseJwt(req)
+            const token = parseJwt(req.headers.authorization)
             const { email } = await checkByUsername(token.username)
             if (token.isLogin) {
                 const updatePassword = await changePassword(email, req.body.oldPassword, req.body.newPassword);
@@ -113,7 +113,7 @@ module.exports = {
             if (!error.isEmpty()) {
                 return badRequest(res, "please provide proper fields")
             }
-            const token = parseJwt(req)
+            const token = parseJwt(req.headers.authorization)
             const userData = await checkByUsername(token.username)
             return userData ? success(res, "success", userData) : badRequest(res, "no user found")
         } catch (error) {
