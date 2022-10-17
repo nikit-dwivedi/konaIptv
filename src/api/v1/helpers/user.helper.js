@@ -150,6 +150,20 @@ module.exports = {
       return false
     }
   },
+  userInfo: async (userId) => {
+    try {
+      const user = await userModel.findOne({ userId }).select('-_id userId username email endDate startDate')
+
+      let startDate = new Date()
+      let endDate = new Date(user.endDate)
+      user._doc.remaingDays = parseInt((endDate - startDate) / 86400000)
+      delete user._doc.startDate
+      delete user._doc.endDate
+      return user ? user : false;
+    } catch (error) {
+      return false
+    }
+  },
   blockUserList: async () => {
     try {
       const blockedUserList = await userModel.find({ isBlocked: true }).select('-_id userId username email')

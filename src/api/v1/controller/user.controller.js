@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator")
 const { unknownError, badRequest, success, created } = require("../helpers/response_helper");
-const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp, changeSubscribeStatus, allUsers, blockUser, blockUserList, checkPassword } = require("../helpers/user.helper");
+const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp, changeSubscribeStatus, allUsers, blockUser, blockUserList, checkPassword, userInfo } = require("../helpers/user.helper");
 const { parseJwt } = require("../middleware/authToken");
 
 module.exports = {
@@ -148,6 +148,20 @@ module.exports = {
             return unknownError(res, "unknown error")
         }
     },
+    getUserInfo: async (req,res) => {
+        try {
+            const error = validationResult(req);
+            if (!error.isEmpty()) {
+                return badRequest(res, "please provide proper fields")
+            }
+            const token = parseJwt(req.headers.authorization)
+            const userData = await userInfo(token.userId)
+            return userData ? success(res, "success", userData) : badRequest(res, "no user found")
+        } catch (error) {
+            console.log(error);
+            return unknownError(res, "unknown error")
+        }
+    },
     changeBlockStatus: async (req, res) => {
         try {
             const { userId } = req.params
@@ -170,7 +184,7 @@ module.exports = {
         try {
             const { password } = req.body
             const token = parseJwt(req.headers.authorization)
-            const { status, message } =await checkPassword(token.username, password)
+            const { status, message } = await checkPassword(token.username, password)
             return status ? success(res, message) : badRequest(res, message);
         } catch (error) {
             return unknownError(res, error.message);
