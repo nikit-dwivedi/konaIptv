@@ -93,6 +93,18 @@ module.exports = {
       return false
     }
   },
+  checkPassword: async (username, password) => {
+    try {
+      const userData = await userModel.findOne({ username });
+      if (!userData) {
+        return { status: false, message: "no user found", data: {} }
+      }
+      const passwordCheck = await checkEncryption(password, userData.password);
+      return passwordCheck ? { status: true, message: "success", data: {} } : { status: false, message: "incorrect password", data: {} }
+    } catch (error) {
+      return { status: false, message: error.message, data: {} }
+    }
+  },
   changeSubscribeStatus: async (userId, status) => {
     try {
       const d = new Date()

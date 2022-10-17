@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator")
 const { unknownError, badRequest, success, created } = require("../helpers/response_helper");
-const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp, changeSubscribeStatus, allUsers, blockUser, blockUserList } = require("../helpers/user.helper");
+const { addUser, verifyEmail, checkLogin, checkByEmail, checkByUsername, verifyOtp, changePassword, genrateOtp, changeSubscribeStatus, allUsers, blockUser, blockUserList, checkPassword } = require("../helpers/user.helper");
 const { parseJwt } = require("../middleware/authToken");
 
 module.exports = {
@@ -165,5 +165,16 @@ module.exports = {
             console.log(error);
             return unknownError(res, "unknown error")
         }
+    },
+    passwordCheck: async (req, res) => {
+        try {
+            const { password } = req.body
+            const token = parseJwt(req.headers.authorization)
+            const { status, message } =await checkPassword(token.username, password)
+            return status ? success(res, message) : badRequest(res, message);
+        } catch (error) {
+            return unknownError(res, error.message);
+        }
     }
+
 }

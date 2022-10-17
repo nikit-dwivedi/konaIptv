@@ -18,7 +18,7 @@ exports.getliveByCategory = async (req, res) => {
         for (const channel of data) {
             let { stream_icon, name, stream_id } = channel
             const playableUrl = livePlayableUrl(stream_id)
-            channelList.push({ stream_icon, name, playableUrl })
+            channelList.push({stream_id, stream_icon, name, playableUrl })
         }
         return data ? success(res, "list of live channel", channelList) : badRequest(res, "no category found", [])
     } catch (error) {
