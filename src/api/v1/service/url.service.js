@@ -1,5 +1,5 @@
-let username = 'c55e3db501'
-let password = 'f6fc89dd50'
+let username = '29eb1b1e3c'
+let password = 'd688202f03'
 let baseUrl = `http://line.premium-dino.com/player_api.php?username=${username}&password=${password}`
 const playableBase = `http://line.premium-dino.com/${username}/${password}`
 
