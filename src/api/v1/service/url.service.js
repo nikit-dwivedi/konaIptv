@@ -1,7 +1,7 @@
-let username = '29eb1b1e3c'
-let password = 'd688202f03'
-let baseUrl = `http://line.premium-dino.com/player_api.php?username=${username}&password=${password}`
-const playableBase = `http://line.premium-dino.com/${username}/${password}`
+let username = '6F0D142D6C99'
+let password = '40A62A927299'
+let baseUrl = `http://procdn.cx/player_api.php?username=${username}&password=${password}`
+const playableBase = `http://procdn.cx/${username}/${password}`
 
 module.exports = {
     categoryUrl: () => {
