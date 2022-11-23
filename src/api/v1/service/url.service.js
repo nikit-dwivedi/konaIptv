@@ -1,7 +1,7 @@
-let username = 'sMEbKDAmZAQrT2d'
-let password = 'lyyIKnBdDpqDcCM'
-let baseUrl = `http://line.ottcst.com:80/player_api.php?username=${username}&password=${password}`
-const playableBase = `http://line.ottcst.com:80/${username}/${password}`
+let username = '6F0D142D6C99'
+let password = '40A62A927299'
+let baseUrl = `http://procdn.cx/player_api.php?username=${username}&password=${password}`
+const playableBase = `http://procdn.cx/${username}/${password}`
 
 module.exports = {
     categoryUrl: () => {
