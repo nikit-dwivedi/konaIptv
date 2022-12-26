@@ -15,8 +15,8 @@ let credentials = {key: privateKey, cert: certificate};
 const server = http.createServer(app);
 const secureServer = https.createServer(credentials,app);
 
-secureServer.listen(8008, () => {
-    console.log(`TevisTv listening at http://${IP}:8008`);
+secureServer.listen(6017, () => {
+    console.log(`TevisTv listening at http://${IP}:6017`);
 })
 server.listen(port, () => {
     console.log(`TevisTv listening at http://${IP}:${port}`)
