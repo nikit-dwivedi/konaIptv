@@ -1,7 +1,7 @@
-let username = '6F0D142D6C99'
-let password = '40A62A927299'
-let baseUrl = `http://procdn.cx/player_api.php?username=${username}&password=${password}`
-const playableBase = `http://procdn.cx/${username}/${password}`
+let username = ''
+let password = ''
+let baseUrl = ``
+const playableBase = ``
 
 module.exports = {
     categoryUrl: () => {
